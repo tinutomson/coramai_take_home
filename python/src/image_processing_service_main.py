@@ -46,7 +46,10 @@ def process_unprocessed_files(log_folder: str, context: zmq.Context) -> None:
                 except Exception as e:
                     logging.error(f"Error: processing {file_name}")
                 finally:    # No retries
-                    os.remove(file_path)
+                    try:
+                        os.remove(file_path)
+                    except:
+                        pass
 
     # Close the socket
     socket.close()
