@@ -41,11 +41,12 @@ def process_unprocessed_files(log_folder: str, context: zmq.Context) -> None:
                     result = classify_image(processed_img)
 
                     message = {'file_name': file_name, 'class': result}
-                    os.remove(file_path)
                     socket.send_json(message)
                     processed_count += 1
                 except Exception as e:
-                    logging.error(f"Error: processing {file_name} : {e}")
+                    logging.error(f"Error: processing {file_name}")
+                finally:    # No retries
+                    os.remove(file_path)
 
     # Close the socket
     socket.close()
